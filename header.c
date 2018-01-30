@@ -7,12 +7,17 @@
 
 #include "header.h"
 
-header	*head = NULL;
-
-header		*append(header *elem, size_t size)
+void	add_to_end(header *first, header *new_elem)
 {
-	header	*ret = elem + elem->size;
-	ret->size = size;
-	ret->next = NULL;
-	return	(ret);
+	while(first->next != NULL) {
+		
+		first = first->next;
+	}
+	first->next = new_elem;
+}
+
+void	add_after_elem(header *elem, header *new_elem)
+{
+       new_elem->next = elem->next;
+       elem->next = new_elem;
 }
