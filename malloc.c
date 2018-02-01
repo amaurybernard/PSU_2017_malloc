@@ -28,11 +28,12 @@ void	*malloc(size_t size)
 		if ((int)genesis == -1 || errno == ENOMEM)
 			return  NULL;
 		header_elem = genesis;
-		headers_head = genesis;
+		taken_head = header_elem;
+		free_head = taken_head + size + sizeof(header);
 	} else {
 
 		header_elem = find_free_space(size);
-		header_add_to_end(headers_head, header_elem);
+		header_add_to_end(taken_head, header_elem);
 	}
 	header_elem->size = size;
 	header_elem->next = NULL;

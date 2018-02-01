@@ -14,7 +14,11 @@
 	void 	*malloc(size_t);
 	void	free(void *ptr);
 
-	static void		*genesis = NULL;
-	static header 		*headers_head = NULL;
+	/** Address of the heap begin */
+	static const void	*genesis = NULL;
+	/** First member of the list of taken blocks */
+	static header 		*taken_head = NULL;
+	/** First member of the list of free blocks */
+	static header		*free_head = NULL;
 
 #endif /* !PSU_2017_MALLOC_MALLOC_H */
