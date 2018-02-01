@@ -5,11 +5,38 @@
 ** Created by ouranos27,
 */
 
+#include "header.h"
 #include "malloc.h"
+#include <errno.h>
 
+static void 	*find_free_space(size_t size)
+{
+
+}
+
+/**
+* @warning /!\ Add block others threads
+* @param size
+* @return
+*/
 void	*malloc(size_t size)
 {
-	return (sbrk(size));
+	header		*header_elem;
+
+	if (!genesis) {
+		genesis = sbrk(getpagesize());
+		if ((int)genesis == -1 || errno == ENOMEM)
+			return  NULL;
+		header_elem = genesis;
+		headers_head = genesis;
+	} else {
+
+		header_elem = find_free_space(size);
+		header_add_to_end(headers_head, header_elem);
+	}
+	header_elem->size = size;
+	header_elem->next = NULL;
+	return (header_elem + sizeof(header_elem));
 }
 
 void 	free(__attribute__((unused)) void *ptr)
