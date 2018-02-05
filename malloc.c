@@ -8,6 +8,7 @@
 #include "malloc.h"
 #include "header_free.h"
 #include <errno.h>
+#include <stdio.h>
 
 /**
 * Return the first element who have enough space
@@ -48,6 +49,7 @@ void	*malloc(size_t size)
 {
 	header		*header_elem;
 
+	puts("hello i am my_malloc !\n");
 	if (!genesis) {
 		genesis = sbrk(getpagesize());
 		if ((long int)genesis == -1 || errno == ENOMEM)

@@ -16,10 +16,10 @@
 	void	free(void *ptr);
 
 	/** Address of the heap begin */
-	static const void	*genesis = NULL;
+	extern const void	*genesis;
 	/** First member of the list of taken blocks */
-	static header 		*taken_head = NULL;
+	extern header 		*taken_head;
 	/** First member of the list of free blocks */
-	static header		*free_head = NULL;
+	extern header		*free_head;
 
 #endif /* !PSU_2017_MALLOC_MALLOC_H */
