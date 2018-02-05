@@ -16,5 +16,6 @@
 
 	void	header_add_to_end(header *first, header *new_elem);
 	void	header_add_after_elem(header *elem, header *new_elem);
+	void	header_delete(header *first, header *to_delete);
 
 #endif /* !PROJECT_HEADER_H*/

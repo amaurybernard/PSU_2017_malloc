@@ -10,6 +10,7 @@
 
 	#include <unistd.h>
 	#include <stdlib.h>
+	#include "header.h"
 
 	void 	*malloc(size_t);
 	void	free(void *ptr);
