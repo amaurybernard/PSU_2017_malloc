@@ -28,6 +28,10 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
-re: fclean re
+re: fclean all
+
+debug: CFLAGS = -Wall -Wextra -g -g3 -fsanitize=address -fPIC
+debug: CC = clang -fsanitize=address
+debug: re
 
 .PHONY: all clean fclean re

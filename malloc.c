@@ -36,6 +36,7 @@ static void 	*get_free_space(size_t size)
 			curs->size -= new_free->size;
 		}
 	}
+	return curs;
 }
 
 /**
@@ -49,9 +50,9 @@ void	*malloc(size_t size)
 
 	if (!genesis) {
 		genesis = sbrk(getpagesize());
-		if ((int)genesis == -1 || errno == ENOMEM)
+		if ((long int)genesis == -1 || errno == ENOMEM)
 			return  NULL;
-		header_elem = genesis;
+		header_elem = (header *)genesis;
 		taken_head = header_elem;
 		free_head = taken_head + size + sizeof(header);
 		free_head->size = getpagesize() - size + sizeof(header);
