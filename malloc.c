@@ -10,6 +10,13 @@
 #include <errno.h>
 #include <stdio.h>
 
+/** Address of the heap begin */
+const void	*genesis = NULL;
+/** First member of the list of taken blocks */
+header 		*taken_head = NULL;
+/** First member of the list of free blocks */
+header		*free_head = NULL;
+
 /**
 * Return the first element who have enough space
 * @param size without header
