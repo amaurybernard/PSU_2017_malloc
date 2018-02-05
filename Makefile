@@ -5,9 +5,9 @@
 ## make
 ##
 
-SRC		=		malloc.c
-SRC		+=		header.c
-SRC		+=		header_free.c
+SRC		=		malloc.c \
+				header.c \
+				header_free.c
 
 SRC_TEST	=	test/test.c
 
@@ -40,7 +40,8 @@ debug: CFLAGS = -Wall -Wextra -g -g3 -fsanitize=address -fPIC
 debug: CC = clang -fsanitize=address
 debug: re
 
-test: $(OBJ) $(OBJ_TEST)
+test: CFLAGS = -Wall -Wextra -g -g3 -fPIC
+test: fclean $(OBJ) $(OBJ_TEST)
 	$(CC) -fPIC $(OBJ) $(OBJ_TEST) -o test.out
 	rm test/test.o
 

@@ -16,7 +16,7 @@
 	void	free(void *ptr);
 
 	/** Address of the heap begin */
-	extern const void	*genesis;
+	extern void		*genesis;
 	/** First member of the list of taken blocks */
 	extern header 		*taken_head;
 	/** First member of the list of free blocks */

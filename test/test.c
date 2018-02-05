@@ -9,7 +9,10 @@
 
 int 	main()
 {
-	char 	*str = malloc(100);
+	char 	*str = malloc(100000);
+
+	if (!str)
+		return (84);
 
 	str[0] = 0;
 	free(str);
