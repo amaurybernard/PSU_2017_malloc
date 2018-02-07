@@ -36,13 +36,17 @@ void	header_add_after_elem(header *elem, header *new_elem)
 * @param first != NULL
 * @param to_delete != NULL
 */
-void	header_delete(header *first, header *to_delete)
+void	header_delete(header **first, header *to_delete)
 {
-	while (first->next != to_delete) {
-		if (!first->next)
-			return;
-		first = first->next;
+	if (*first == to_delete) {
+		first = NULL;
+		return;
 	}
-	first->next = first->next->next;
+	while ((*first)->next != to_delete) {
+		if (!(*first)->next)
+			return;
+		*first = (*first)->next;
+	}
+	(*first)->next = (*first)->next->next;
 	to_delete->next = NULL;
 }
