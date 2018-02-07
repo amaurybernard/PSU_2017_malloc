@@ -12,12 +12,14 @@
 * @param first != NULL
 * @param new_elem != NULL && new_elem->next == NULL
 */
-void	header_add_to_end(header *first, header *new_elem)
+void	header_add_to_end(header **first, header *new_elem)
 {
-	while(first->next != NULL) {
-		first = first->next;
+	if (*first == NULL)
+		*first = new_elem;
+	while((*first)->next != NULL) {
+		*first = (*first)->next;
 	}
-	first->next = new_elem;
+	(*first)->next = new_elem;
 }
 
 /**

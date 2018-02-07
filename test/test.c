@@ -6,14 +6,15 @@
 */
 
 #include "malloc.h"
+#include "../show_alloc_mem.h"
 
 int 	main()
 {
-	char 	*str = malloc(100000);
+	char 	*str = malloc(6);
 
 	if (!str)
 		return (84);
-
+	show_alloc_mem();
 	str[0] = 0;
 	free(str);
 }

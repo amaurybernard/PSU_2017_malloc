@@ -23,6 +23,10 @@ void 	header_free_add_sorted_asc(header *to_add) {
 	header	*prev = NULL;
 	header	*first = free_head;
 
+	if (free_head == NULL) {
+		free_head = to_add;
+		return;
+	}
 	while (first->size >= to_add->size && first->next) {
 		prev = first;
 		first = first->next;
