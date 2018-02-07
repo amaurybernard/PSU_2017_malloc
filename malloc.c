@@ -26,19 +26,19 @@ static long int        my_putnbr_base(long int nbr, char *base)
 	long int  len_base = my_strlen(base);
 	if (nbr >= len_base) {
 		my_putnbr_base((nbr / len_base), base);
-		write(2, &base[nbr % len_base], 0);
+		write(2, &base[nbr % len_base], 1);
 	}
 	if (nbr < len_base && nbr >= 0)
-		write(2, &base[nbr % len_base], 0);
+		write(2, &base[nbr % len_base], 1);
 	return (nbr);
 }
 
 static void    my_putstr(char *str)
 {
-	//int   wlen;
+	int   wlen;
 
-	//wlen = my_strlen(str);
-	write(2, str, 0);
+	wlen = my_strlen(str);
+	write(2, str, wlen);
 }
 
 /** Address of the heap begin */
@@ -102,14 +102,14 @@ static header	*get_free_space(size_t size)
 		if (!free_head)
 			my_putstr("free_head == NULL\n");
 		new_free = curs + (size + sizeof(header));
-		if ((void *)new_free >= sbrk(0)) {
+		if ((void *)new_free >= sbrk(0)) { //todo this is not supposed to happen
 			my_putstr("Alexandre est un pd!\n");
 			return curs;
 		}
 		my_putstr("here!\n");
 		new_free->size = (curs->size) - (size + sizeof(header));//seg at this
 		my_putstr("not here!\n");
-		//header_free_add_sorted_asc(new_free);
+		//header_free_add_sorted_asc(new_free);//todo make it work
 		curs->size = size;
 
 	}
@@ -143,7 +143,10 @@ void	*malloc(size_t size)
 	return (header_elem + sizeof(header_elem));
 }
 
+//todo
 void 	free(__attribute__((unused)) void *ptr)
 {
 	my_putstr("free is call!\n");
 }
+
+//todo: calloc
