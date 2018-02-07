@@ -10,12 +10,30 @@
 #include <errno.h>
 #include <stdio.h>
 
-int     my_strlen(char *str)
+
+
+static long int                my_strlen(char *str)
 {
-	return (*str ? (1 + my_strlen(++str)) : 0);
+	long int        i = 0;
+
+	while (str[i] != '\0')
+		i++;
+	return (i);
 }
 
-void    my_putstr(char *str)
+static long int        my_putnbr_base(long int nbr, char *base)
+{
+	long int  len_base = my_strlen(base);
+	if (nbr >= len_base) {
+		my_putnbr_base((nbr / len_base), base);
+		write(1, &base[nbr % len_base], 1);
+	}
+	if (nbr < len_base && nbr >= 0)
+		write(1, &base[nbr % len_base], 1);
+	return (nbr);
+}
+
+static void    my_putstr(char *str)
 {
 	int   wlen;
 
@@ -44,13 +62,14 @@ static header	*get_free_space(size_t size)
 	header	*new_free;
 
 	curs = free_head;
-	while (curs && curs->size >= size + sizeof(header)) {
+	while (curs && curs->size < size) {
+		my_putstr("Z\n");
 		curs = curs->next;
 	}
 	my_putstr("A\n");
 	if (!curs) {
-
-		sbrk(getpagesize());//todo: chek if the last block of the page is free add it to free lst
+		my_putstr("NOMEM");
+		//sbrk(getpagesize());//todo: chek if the last block of the page is free add it to free lst
 		return NULL;//head == null OR NOMEM <-- new page;
 	} else {
 		my_putstr("B\n");
@@ -58,18 +77,23 @@ static header	*get_free_space(size_t size)
 		header_add_to_end(taken_head, curs);
 		my_putstr("C\n");
 
-
-		if (curs->size > (size + (sizeof(header) * 2))) {
+		my_putstr("size: ");
+		my_putnbr_base((long int)curs->size, "0123456789");
+		my_putstr("\n");
+		if (curs->size > (size + sizeof(header))) {
 			if (!free_head)
 				my_putstr("free_head == NULL\n");
 			my_putstr("D\n");
-			new_free = curs + (size + sizeof(header));//ok
+			new_free = curs + (size + sizeof(header));//
+			my_putstr("new_free: 0x");
+			my_putnbr_base((long int)new_free, "0123456789abcdef");
+			my_putstr("\n");
 			my_putstr("E\n");
-			new_free->size = curs->size - (size + (sizeof(header) * 4));//seg at this line
+			new_free->size = curs->size - (size + sizeof(header));//seg at this line
 			my_putstr("F\n");
 			header_free_add_sorted_asc(new_free);
 			my_putstr("G\n");
-			curs->size -= new_free->size;
+			curs->size = size;//fai2 fois
 			my_putstr("E\n");
 		}
 	}
@@ -101,11 +125,12 @@ void	*malloc(size_t size)
 		//todo: handle if there is no more space OK => Handle if free_head == NULL
 		if (size_to_alloc > size + sizeof(header)) {
 			free_head = genesis + (size + sizeof(header));
-			free_head->size = page_size - (size + (sizeof(header) * 2));
+			free_head->size = size_to_alloc - (size + (sizeof(header) * 2));
 			free_head->next = NULL;
 		}
 	} else {
 		header_elem = get_free_space(size);
+		//header_add_to_end(taken_head, header_elem);
 	}
 
 	if (!header_elem) {
