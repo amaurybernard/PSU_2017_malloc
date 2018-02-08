@@ -36,6 +36,9 @@ static header	*sbrk_caller(size_t size)
 		return (NULL);
 	if (!genesis)
 		genesis = header_elem;
+	my_putstr("test size: ");
+	my_putnbr_base(size_to_alloc, "0123456789");
+	my_putstr("\n");
 	header_elem->size = size_to_alloc - sizeof(header);
 	my_putstr("Z");
 	return (header_elem);
@@ -66,7 +69,7 @@ static header	*get_free_space(size_t size)
 		header_delete(&free_head, curs);
 	}
 	my_putstr("1\n");
-	header_add_to_end(&taken_head, curs);
+	//header_add_to_end(&taken_head, curs);
 	my_putstr("IF SIZE: ");
 	my_putnbr_base((long int)curs->size, "0123456789");
 	my_putstr("\n");
@@ -79,9 +82,18 @@ static header	*get_free_space(size_t size)
 			return curs;
 		}
 		my_putstr("here!\n");
-		new_free->size = (curs->size) - (size + sizeof(header));//seg at this
-		my_putstr("not here!\n");
-		//header_free_add_sorted_asc(new_free);//todo make it work
+		new_free->next = NULL;
+		new_free->size = curs->size;
+		new_free->size -= size;
+		new_free->size -= sizeof(header) * 2;//seg at this
+		my_putstr("not here!\nsize new_free: ");
+		my_putnbr_base(new_free->size, "0123456789");
+		my_putstr("\n");
+		if ((void *)(new_free + new_free->size + sizeof(header)) >= sbrk(0)) {
+			my_putstr("Alexandre est un pd!\n");
+			return curs;
+		}
+		header_free_add_sorted_asc(new_free);//todo make it work
 		curs->size = size;
 
 	}
@@ -98,8 +110,10 @@ void	*malloc(size_t size)
 {
 	if (free_head) {
 		header *first = free_head;
-		while (first->next) {
-			my_putstr("x\n");
+		while (first) {
+			my_putstr("\t\theader_free curs->size :");
+			my_putnbr_base(first->size, "0123456789");
+			my_putstr("\n");
 			first = first->next;
 		}
 	}
@@ -114,7 +128,6 @@ void	*malloc(size_t size)
 		return NULL;
 	}
 
-	header_elem->next = NULL;
 	my_putstr("end size: ");
 	my_putnbr_base((long int)header_elem->size, "0123456789");
 	my_putstr("\n");
@@ -129,3 +142,11 @@ void 	free(__attribute__((unused)) void *ptr)
 }
 
 //todo: calloc
+/*
+void 	*realloc(void *ptr, size_t size)
+{
+
+	if (size <= ((header *)(ptr - sizeof(header)))->size)//todo make it free !
+		return (ptr);
+	return (NULL);
+}*/

@@ -22,9 +22,9 @@ long int 	my_putnbr_base(long int nbr, char *base)
 	long int  len_base = my_strlen(base);
 	if (nbr >= len_base) {
 		my_putnbr_base((nbr / len_base), base);
-		write(1, &base[nbr % len_base], 0);
+		write(1, &base[nbr % len_base], 1);
 	}
 	if (nbr < len_base && nbr > 0)
-		write(1, &base[nbr % len_base], 0);
+		write(1, &base[nbr % len_base], 1);
 	return (nbr);
 }

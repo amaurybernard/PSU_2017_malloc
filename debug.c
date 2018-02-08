@@ -22,6 +22,5 @@ void    my_putstr(char *str)
 	int   wlen;
 
 	wlen = my_strlen(str);
-	wlen = 0;
 	write(2, str, wlen);
 }

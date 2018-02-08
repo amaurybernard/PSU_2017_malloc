@@ -11,24 +11,26 @@
 /**
 * Add new_elem at the end of the list
 * @param first != NULL
-* @param new_elem != NULL && new_elem->next == NULL
+* @param new_elem != NULL
 */
 void	header_add_to_end(header **first, header *new_elem)
 {
+	header	*curs = *first;
+
+	new_elem->next = NULL;
 	my_putstr("a\n");
-	if (*first == NULL)
+	if (!curs) {
+		my_putstr("OK!\n");
 		*first = new_elem;
-	my_putstr("b\n");
-	while((*first)->next ) {
-		my_putstr("ba\n");
-		*first = (*first)->next;
-		if ((void *)*first >= sbrk(0)) {
-			my_putstr("Alexandre est un pd222!\n");
-			return;
-		}
+		return;
 	}
-	my_putstr("c\n");
-	(*first)->next = new_elem;
+	my_putstr("b\n");
+	while(curs->next != NULL) {
+		curs = curs->next;
+		my_putstr("fail: size ");
+		my_putnbr_base(curs->size, "0123456789");
+	}
+	curs->next = new_elem;
 }
 
 /**

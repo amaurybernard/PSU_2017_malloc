@@ -14,6 +14,7 @@
 
 	void 	*malloc(size_t);
 	void	free(void *ptr);
+//	void	*realloc(void *ptr, size_t size);
 
 	/** Address of the heap begin */
 	extern void		*genesis;
