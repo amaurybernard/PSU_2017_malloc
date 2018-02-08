@@ -9,7 +9,8 @@ SRC		=		malloc.c \
 				header.c \
 				header_free.c \
 				show_alloc_mem.c \
-				my_putnbr_base.c
+				my_putnbr_base.c \
+				debug.c
 
 SRC_TEST	=	test/test.c
 

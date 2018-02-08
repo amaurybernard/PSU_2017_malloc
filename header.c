@@ -5,6 +5,7 @@
 ** Created by ouranos27,
 */
 
+#include "debug.h"
 #include "header.h"
 
 /**
@@ -14,11 +15,19 @@
 */
 void	header_add_to_end(header **first, header *new_elem)
 {
+	my_putstr("a\n");
 	if (*first == NULL)
 		*first = new_elem;
-	while((*first)->next != NULL) {
+	my_putstr("b\n");
+	while((*first)->next ) {
+		my_putstr("ba\n");
 		*first = (*first)->next;
+		if ((void *)*first >= sbrk(0)) {
+			my_putstr("Alexandre est un pd222!\n");
+			return;
+		}
 	}
+	my_putstr("c\n");
 	(*first)->next = new_elem;
 }
 

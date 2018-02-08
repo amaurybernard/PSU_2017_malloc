@@ -5,41 +5,12 @@
 ** Created by ouranos27,
 */
 
-#include "malloc.h"
-#include "header_free.h"
+
 #include <errno.h>
 #include <stdio.h>
-
-
-
-static long int                my_strlen(char *str)
-{
-	long int        i = 0;
-
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-static long int        my_putnbr_base(long int nbr, char *base)
-{
-	long int  len_base = my_strlen(base);
-	if (nbr >= len_base) {
-		my_putnbr_base((nbr / len_base), base);
-		write(2, &base[nbr % len_base], 1);
-	}
-	if (nbr < len_base && nbr >= 0)
-		write(2, &base[nbr % len_base], 1);
-	return (nbr);
-}
-
-static void    my_putstr(char *str)
-{
-	int   wlen;
-
-	wlen = my_strlen(str);
-	write(2, str, wlen);
-}
+#include "malloc.h"
+#include "header_free.h"
+#include "debug.h"
 
 /** Address of the heap begin */
 void		*genesis = NULL;
@@ -53,20 +24,19 @@ header		*free_head = NULL;
 //todo: check is the block before breack is free
 static header	*sbrk_caller(size_t size)
 {
-	header		*header_elem;
-	size_t 		size_to_alloc = 0;
-	const size_t 	page_size = (size_t)getpagesize();
+	header			*header_elem;
+	size_t 			size_to_alloc = 0;
+	const size_t 		page_size = (size_t)getpagesize();
 
-	my_putstr("A");
 	while (size_to_alloc < (size + sizeof(header))) {
 		size_to_alloc += page_size;
 	}
 	header_elem = sbrk(size_to_alloc);
 	if (header_elem == (void *)-1 || errno == ENOMEM)
-		exit(84);//todo
+		return (NULL);
 	if (!genesis)
 		genesis = header_elem;
-	header_elem->size = size_to_alloc;
+	header_elem->size = size_to_alloc - sizeof(header);
 	my_putstr("Z");
 	return (header_elem);
 }
@@ -90,6 +60,8 @@ static header	*get_free_space(size_t size)
 	if (!curs) {
 		my_putstr("NOMEM");
 		curs = sbrk_caller(size);
+		if (!curs)
+			return (NULL);
 	} else {
 		header_delete(&free_head, curs);
 	}
@@ -101,8 +73,8 @@ static header	*get_free_space(size_t size)
 	if (curs->size > (size + sizeof(header))) {
 		if (!free_head)
 			my_putstr("free_head == NULL\n");
-		new_free = curs + (size + sizeof(header));
-		if ((void *)new_free >= sbrk(0)) { //todo this is not supposed to happen
+		new_free = (header *)((unsigned long)curs + (unsigned long)size + (unsigned long)sizeof(header));
+		if ((void *)new_free >= sbrk(0)) {
 			my_putstr("Alexandre est un pd!\n");
 			return curs;
 		}
@@ -124,6 +96,13 @@ static header	*get_free_space(size_t size)
 */
 void	*malloc(size_t size)
 {
+	if (free_head) {
+		header *first = free_head;
+		while (first->next) {
+			my_putstr("x\n");
+			first = first->next;
+		}
+	}
 	my_putstr("malloc is call!\n size :");
 	my_putnbr_base((long int)size, "0123456789");
 	my_putstr("\n");
