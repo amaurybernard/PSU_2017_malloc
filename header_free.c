@@ -26,38 +26,16 @@ void 	header_free_add_sorted_asc(header_t *to_add) {
 
 	to_add->next = NULL;
 	while (curs && curs->size < to_add->size) {
-		my_putstr("header_free curs->size :");
-		my_putnbr_base(curs->size, "0123456789");
-		my_putstr("\n");
-		my_putstr("header_free to_add->size :");
-		my_putnbr_base(to_add->size, "0123456789");
-		my_putstr("\n");
-
 		prev = curs;
 		curs = curs->next;
 	}
-	if (!prev) {//Pas d'élément dans la liste ou size < à tout les autres
-		if (free_head){
-		my_putstr("\t\t !prev\n");
-		my_putstr("\t\theader_free before free_head->size :");
-		my_putnbr_base(free_head->size, "0123456789");
-		my_putstr("\n");
-		}
+	if (!prev) {
 		to_add->next = free_head;
 		free_head = to_add;
-
-		if (free_head) {
-			my_putstr("\t\theader_free after free_head->size :");
-			my_putnbr_base(free_head->size, "0123456789");
-			my_putstr("\n");
-		}
 	} else if (!curs) { //fin de la list
-		my_putstr("a");
 		prev->next = to_add;
-	} else {//au mileu
-		my_putstr("b");
+	} else {
 		to_add->next = prev->next;
 		prev->next = to_add;
 	}
-	my_putstr("\n");
 }

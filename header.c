@@ -5,7 +5,6 @@
 ** Created by ouranos27,
 */
 
-#include "debug.h"
 #include "header.h"
 
 /**
@@ -18,17 +17,12 @@ void	header_add_to_end(header_t **first, header_t *new_elem)
 	header_t	*curs = *first;
 
 	new_elem->next = NULL;
-	//my_putstr("a\n");
 	if (!curs) {
-		//my_putstr("OK!\n");
 		*first = new_elem;
-		return;
+		return ;
 	}
-	//my_putstr("b\n");
 	while(curs->next != NULL) {
 		curs = curs->next;
-		//my_putstr("fail: size ");
-		//my_putnbr_base(curs->size, "0123456789");
 	}
 	curs->next = new_elem;
 }
@@ -53,7 +47,7 @@ void	header_delete(header_t **first, header_t *to_delete)
 {
 	if (*first == to_delete) {
 		*first = (*first)->next ? (*first)->next : NULL;
-		return;
+		return ;
 	}
 	while ((*first)->next != to_delete) {
 		if (!(*first)->next)

@@ -17,7 +17,6 @@ static void	show_address(char *str, const void *ptr)
 	write(1, "\n", 1);
 }
 
-/*
 static void	show_block(header_t *header_block) {
 	write(1, "\n0x", 3);
 	my_putnbr_base((long)header_block + sizeof(header_t), "0123456789abcdef");
@@ -27,8 +26,9 @@ static void	show_block(header_t *header_block) {
 		"0123456789abcdef");
 	write(1, " : ", 3);
 	my_putnbr_base((long)header_block->size, "0123456789");
-}*/
+}
 
+/* debug function
 static void	show_block_state(header_t *header_block) {
 	write(1, "\n0x", 3);
 	my_putnbr_base((long)header_block + sizeof(header_t), "0123456789abcdef");
@@ -41,6 +41,7 @@ static void	show_block_state(header_t *header_block) {
 	write(1, " : ", 3);
 	my_putstr(header_block->isFree ? " free" : " TAKEN");
 }
+*/
 
 void 		show_alloc_mem(void)
 {
@@ -48,10 +49,10 @@ void 		show_alloc_mem(void)
 	const void	*heap_end = sbrk(0);
 
 	if (!genesis)
-		return;
+		return ;
 	show_address("break : ", heap_end);
 	while ((void *)header_curs < heap_end) {
-		show_block_state(header_curs);
+		show_block(header_curs);
 		header_curs = (header_t *)((unsigned long)header_curs
 			+ (unsigned long)header_curs->size
 			+ (unsigned long)sizeof(header_t));

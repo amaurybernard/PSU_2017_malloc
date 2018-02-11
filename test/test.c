@@ -27,11 +27,7 @@ int 	main()
 	memset(str, 't', 120);
 	str = malloc(776);
 	memset(str, 't', 776);
-
-
-
-
-	//show_alloc_mem();
+	show_alloc_mem();
 	str[0] = 0;
 	free(str);
 }
