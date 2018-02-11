@@ -40,8 +40,8 @@ static void	show_block_state(header_t *header_block) {
 	my_putnbr_base((long)header_block->size, "0123456789");
 	write(1, " : ", 3);
 	my_putstr(header_block->isFree ? " free" : " TAKEN");
-}
-*/
+}*/
+
 
 void 		show_alloc_mem(void)
 {

@@ -13,8 +13,8 @@
 	#include "header.h"
 
 	void 	*malloc(size_t);
+	void	*realloc(void *ptr, size_t size);
 	void	free(void *ptr);
-	//void	*realloc(void *ptr, size_t size);
 
 	/** Address of the heap begin */
 	extern void		*genesis;

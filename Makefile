@@ -7,6 +7,8 @@
 
 SRC		=		malloc.c \
 				header.c \
+				realloc.c \
+				free.c \
 				header_free.c \
 				show_alloc_mem.c \
 				my_putnbr_base.c \

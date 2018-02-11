@@ -105,8 +105,4 @@ void	*malloc(size_t size)
 		+ (unsigned long)sizeof(header_t)));
 }
 
-void 	free(__attribute__((unused)) void *ptr)
-{
-}
-
 //todo: calloc
