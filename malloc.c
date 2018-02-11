@@ -11,6 +11,7 @@
 #include "malloc.h"
 #include "header_free.h"
 #include "debug.h"
+#include "show_alloc_mem.h"
 
 /** Address of the heap begin */
 void		*genesis = NULL;
@@ -69,7 +70,8 @@ static header	*get_free_space(size_t size)
 		header_delete(&free_head, curs);
 	}
 	my_putstr("1\n");
-	//header_add_to_end(&taken_head, curs);
+	curs->isFree = false;
+	header_add_to_end(&taken_head, curs);
 	my_putstr("IF SIZE: ");
 	my_putnbr_base((long int)curs->size, "0123456789");
 	my_putstr("\n");
@@ -81,12 +83,11 @@ static header	*get_free_space(size_t size)
 			my_putstr("\tptr > break_ptr\n");
 			return curs;
 		}
-		my_putstr("here!\n");
 		new_free->next = NULL;
 		new_free->size = curs->size;
 		new_free->size -= size;
 		new_free->size -= sizeof(header) * 2;//seg at this
-		my_putstr("not here!\nsize new_free: ");
+		my_putstr("size new_free: ");
 		my_putnbr_base(new_free->size, "0123456789");
 		my_putstr("\n");
 		if ((void *)((unsigned long)new_free + (unsigned long)new_free->size + (unsigned long)sizeof(header)) >= sbrk(0)) {
@@ -94,6 +95,7 @@ static header	*get_free_space(size_t size)
 			//return curs;
 		}
 		curs->size = size;
+		new_free->isFree = true;
 		header_free_add_sorted_asc(new_free);//todo make it work
 
 	}
@@ -112,7 +114,7 @@ void	*malloc(size_t size)
 		header *first = free_head;
 		while (first) {
 			my_putstr("\t\theader_free curs->size :");
-			my_putnbr_base(first->size, "0123456789");
+			my_putnbr_base((long int)first, "0123456789abcdef");
 			my_putstr("\n");
 			first = first->next;
 		}
@@ -132,6 +134,9 @@ void	*malloc(size_t size)
 	my_putnbr_base((long int)header_elem->size, "0123456789");
 	my_putstr("\n");
 	my_putstr("malloc return!\n");
+	my_putnbr_base((long int)free_head, "0123456789abcdef");
+	my_putstr("\n");
+	show_alloc_mem();
 	return (header_elem + sizeof(header_elem));
 }
 

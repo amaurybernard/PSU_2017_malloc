@@ -5,31 +5,54 @@
 ** Created by ouranos27,
 */
 
-//#include <stdio.h>
+#include "debug.h"
 #include "malloc.h"
 #include "show_alloc_mem.h"
 
+static void	show_address(char *str, const void *ptr)
+{
+	my_putstr(str);
+	write(1, "0x", 2);
+	my_putnbr_base((long)ptr, "0123456789abcdef");
+	write(1, "\n", 1);
+}
+
+/*
+static void	show_block(header *header_block) {
+	write(1, "\n0x", 3);
+	my_putnbr_base((long)header_block + sizeof(header), "0123456789abcdef");
+	write(1, " - 0x", 5);
+	my_putnbr_base((long)header_block + sizeof(header)
+			+ (long)header_block->size - 1,
+		"0123456789abcdef");
+	write(1, " : ", 3);
+	my_putnbr_base((long)header_block->size, "0123456789");
+}*/
+
+static void	show_block_state(header *header_block) {
+	write(1, "\n0x", 3);
+	my_putnbr_base((long)header_block + sizeof(header), "0123456789abcdef");
+	write(1, " - 0x", 5);
+	my_putnbr_base((long)header_block + (long)sizeof(header)
+			+ (long)header_block->size - (long)1,
+		"0123456789abcdef");
+	write(1, " : ", 3);
+	my_putnbr_base((long)header_block->size, "0123456789");
+	write(1, " : ", 3);
+	my_putstr(header_block->isFree ? " free" : " TAKEN");
+}
+
 void 		show_alloc_mem(void)
 {
-	header	*head = (header *)genesis;
+	header		*header_curs = genesis;
+	const void	*heap_end = sbrk(0);
 
-	write(1, "break : 0x", 10);
-	my_putnbr_base((long int)sbrk(0), "0123456789abcdef");
-	write(1, "\n", 1);
-	my_putnbr_base((long int)sizeof(header), "0123456789");
-	while (head) {
-		if (head >= (header *)sbrk(0))
-			break ;
-		/*write(1, "\nhead : ", 8);
-		my_putnbr_base((long int)head, "0123456789");*/
-		write(1, "\n0x", 3);
-		my_putnbr_base((long int)head + sizeof(header), "0123456789abcdef");
-		write(1, " - 0x", 5);
-		my_putnbr_base((long int)head + sizeof(header) + (long int)head->size - 1,
-			"0123456789abcdef");
-		write(1, " : ", 3);
-		my_putnbr_base((long int)head->size, "0123456789");
-		head = head + head->size + sizeof(header);
+	show_address("break : ", heap_end);
+	while ((void *)header_curs < heap_end) {
+		show_block_state(header_curs);
+		header_curs = (header *)((unsigned long)header_curs
+			+ (unsigned long)header_curs->size
+			+ (unsigned long)sizeof(header));
 	}
 	write(1, "\n", 1);
 }

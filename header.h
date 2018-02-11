@@ -8,10 +8,12 @@
 	#define PROJECT_HEADER_H
 	#include <unistd.h>
 	#include <stdlib.h>
+	#include <stdbool.h>
 
 	typedef struct		header {
 		size_t		size;
 		struct header	*next;
+		bool		isFree;
 	}			header;
 
 	void	header_add_to_end(header **first, header *new_elem);
