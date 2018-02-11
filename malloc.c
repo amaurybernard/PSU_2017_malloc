@@ -86,13 +86,17 @@ static header	*get_free_space(size_t size)
 		new_free->next = NULL;
 		new_free->size = curs->size;
 		new_free->size -= size;
-		new_free->size -= sizeof(header) * 2;//seg at this
+		new_free->size -= sizeof(header);
 		my_putstr("size new_free: ");
 		my_putnbr_base(new_free->size, "0123456789");
 		my_putstr("\n");
-		if ((void *)((unsigned long)new_free + (unsigned long)new_free->size + (unsigned long)sizeof(header)) >= sbrk(0)) {
+		if ((void *)((unsigned long)new_free + (unsigned long)new_free->size + (unsigned long)sizeof(header)) > sbrk(0)) {
 			my_putstr("\tend_ptr > break ptr\n");
 			//return curs;
+			if ((void *)((unsigned long)new_free + (unsigned long)new_free->size + (unsigned long)sizeof(header)) < sbrk(0)) {
+				my_putstr("\tend_ptr < break ptr -> memory loss\n");
+				//return curs;
+			}
 		}
 		curs->size = size;
 		new_free->isFree = true;
@@ -110,6 +114,9 @@ static header	*get_free_space(size_t size)
 */
 void	*malloc(size_t size)
 {
+	my_putstr("\n---  input  ---\n");
+	show_alloc_mem();
+	my_putstr("\n---  !input  ---\n");
 	if (free_head) {
 		header *first = free_head;
 		while (first) {
@@ -136,7 +143,9 @@ void	*malloc(size_t size)
 	my_putstr("malloc return!\n");
 	my_putnbr_base((long int)free_head, "0123456789abcdef");
 	my_putstr("\n");
+	my_putstr("\n---  output  ---\n");
 	show_alloc_mem();
+	my_putstr("\n--- !output  ---\n");
 	return (header_elem + sizeof(header_elem));
 }
 

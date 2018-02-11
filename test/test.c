@@ -15,20 +15,18 @@ int 	main()
 
 	if (!str)
 		return (84);
-	str = malloc(1);
-	memset(str, 3, 1);
-	str = malloc(2);
-	memset(str, 5, 2);
-	str = malloc(3);
-	memset(str, 'e', 3);
-	str = malloc(6);
-	memset(str, 't', 6);
-	str = malloc(4);
+	str = malloc(552);
+	memset(str, 3, 552);
+	str = malloc(120);
+	memset(str, 5, 120);
+	str = malloc(1024);
+	memset(str, 'e', 1024);
+	str = malloc(5);
 	memset(str, 't', 5);
-	str = malloc(7);
-	memset(str, 't', 7);
-	str = malloc(8);
-	memset(str, 't', 8);
+	str = malloc(120);
+	memset(str, 't', 120);
+	str = malloc(776);
+	memset(str, 't', 776);
 
 
 

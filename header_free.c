@@ -49,11 +49,15 @@ void 	header_free_add_sorted_asc(header *to_add) {
 		if (free_head) {
 			my_putstr("\t\theader_free after free_head->size :");
 			my_putnbr_base(free_head->size, "0123456789");
+			my_putstr("\n");
 		}
 	} else if (!curs) { //fin de la list
+		my_putstr("a");
 		prev->next = to_add;
 	} else {//au mileu
+		my_putstr("b");
 		to_add->next = prev->next;
 		prev->next = to_add;
 	}
+	my_putstr("\n");
 }

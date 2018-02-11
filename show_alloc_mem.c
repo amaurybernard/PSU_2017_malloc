@@ -47,6 +47,8 @@ void 		show_alloc_mem(void)
 	header		*header_curs = genesis;
 	const void	*heap_end = sbrk(0);
 
+	if (!genesis)
+		return;
 	show_address("break : ", heap_end);
 	while ((void *)header_curs < heap_end) {
 		show_block_state(header_curs);
