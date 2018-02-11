@@ -10,7 +10,7 @@
 
 	#include "header.h"
 
-	void 	header_free_add_sorted_asc(header *to_add);
-	void 	header_free_add_at_head(header *new_head);
+	void 	header_free_add_sorted_asc(header_t *to_add);
+	void 	header_free_add_at_head(header_t *new_head);
 
 #endif /* !PSU_2017_MALLOC_HEADER_FREE_H */

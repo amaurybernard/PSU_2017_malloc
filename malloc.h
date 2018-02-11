@@ -14,13 +14,13 @@
 
 	void 	*malloc(size_t);
 	void	free(void *ptr);
-//	void	*realloc(void *ptr, size_t size);
+	//void	*realloc(void *ptr, size_t size);
 
 	/** Address of the heap begin */
 	extern void		*genesis;
 	/** First member of the list of taken blocks */
-	extern header 		*taken_head;
+	extern header_t 		*taken_head;
 	/** First member of the list of free blocks */
-	extern header		*free_head;
+	extern header_t		*free_head;
 
 #endif /* !PSU_2017_MALLOC_MALLOC_H */

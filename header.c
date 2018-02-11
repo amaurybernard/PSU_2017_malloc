@@ -13,9 +13,9 @@
 * @param first != NULL
 * @param new_elem != NULL
 */
-void	header_add_to_end(header **first, header *new_elem)
+void	header_add_to_end(header_t **first, header_t *new_elem)
 {
-	header	*curs = *first;
+	header_t	*curs = *first;
 
 	new_elem->next = NULL;
 	//my_putstr("a\n");
@@ -38,7 +38,7 @@ void	header_add_to_end(header **first, header *new_elem)
 * @param first != NULL
 * @param new_elem != null && new_elem->next == NULL
 */
-void	header_add_after_elem(header *elem, header *new_elem)
+void	header_add_after_elem(header_t *elem, header_t *new_elem)
 {
        new_elem->next = elem->next;
        elem->next = new_elem;
@@ -49,7 +49,7 @@ void	header_add_after_elem(header *elem, header *new_elem)
 * @param first != NULL
 * @param to_delete != NULL
 */
-void	header_delete(header **first, header *to_delete)
+void	header_delete(header_t **first, header_t *to_delete)
 {
 	if (*first == to_delete) {
 		*first = (*first)->next ? (*first)->next : NULL;

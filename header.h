@@ -10,14 +10,14 @@
 	#include <stdlib.h>
 	#include <stdbool.h>
 
-	typedef struct		header {
+	typedef struct		header_s {
 		size_t		size;
-		struct header	*next;
+		struct header_s	*next;
 		bool		isFree;
-	}			header;
+	}			header_t;
 
-	void	header_add_to_end(header **first, header *new_elem);
-	void	header_add_after_elem(header *elem, header *new_elem);
-	void	header_delete(header **first, header *to_delete);
+	void	header_add_to_end(header_t **first, header_t *new_elem);
+	void	header_add_after_elem(header_t *elem, header_t *new_elem);
+	void	header_delete(header_t **first, header_t *to_delete);
 
 #endif /* !PROJECT_HEADER_H*/

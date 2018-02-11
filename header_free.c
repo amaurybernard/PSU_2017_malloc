@@ -9,7 +9,7 @@
 #include "debug.h"
 #include "malloc.h"
 
-void 	header_free_add_at_head(header *new_head)
+void 	header_free_add_at_head(header_t *new_head)
 {
 	new_head->next = free_head;
 	free_head = new_head;
@@ -20,9 +20,9 @@ void 	header_free_add_at_head(header *new_head)
 * Add sorted by size in the list (for the free lst)
 * @param to_add to_add->next != NULL
 */
-void 	header_free_add_sorted_asc(header *to_add) {
-	header *curs = free_head ;
-	header *prev = NULL;
+void 	header_free_add_sorted_asc(header_t *to_add) {
+	header_t *curs = free_head ;
+	header_t *prev = NULL;
 
 	to_add->next = NULL;
 	while (curs && curs->size < to_add->size) {

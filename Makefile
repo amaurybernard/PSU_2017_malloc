@@ -20,7 +20,7 @@ OBJ		=		$(SRC:.c=.o)
 
 NAME	= 		libmy_malloc.so
 
-CFLAGS	=		-Wall -Wextra -Werror -fPIC
+CFLAGS	=		-Wall -Wextra -fPIC
 
 CC		=		gcc
 
