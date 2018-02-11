@@ -45,6 +45,20 @@ static header_t	*sbrk_caller(size_t size)
 	return (header_elem);
 }
 
+void		cut_overhang_mem(header_t *curs, size_t size)
+{
+	header_t	*new_free;
+	if (curs->size > (size + sizeof(header_t))) {
+		new_free = (header_t *)((unsigned long)curs +
+			(unsigned long)size + (unsigned long)sizeof(header_t));
+		new_free->next = NULL;
+		new_free->size = curs->size - size - sizeof(header_t);
+		curs->size = size;
+		new_free->isFree = true;
+		header_free_add_sorted_asc(new_free);
+	}
+}
+
 /**
 * Return the first element who have enough space
 * @param size without header
@@ -52,10 +66,8 @@ static header_t	*sbrk_caller(size_t size)
 */
 static header_t	*get_free_space(size_t size)
 {
-	header_t	*curs;
-	header_t	*new_free;
+	header_t	*curs = free_head;
 
-	curs = free_head;
 	while (curs && curs->size < size)
 		curs = curs->next;
 	if (!curs) {
@@ -67,17 +79,7 @@ static header_t	*get_free_space(size_t size)
 	}
 	curs->isFree = false;
 	header_add_to_end(&taken_head, curs);
-	if (curs->size > (size + sizeof(header_t))) {
-		new_free = (header_t *)((unsigned long)curs + (unsigned long)size + (unsigned long)sizeof(header_t));
-		if ((void *)new_free >= sbrk(0))
-			return curs;
-		new_free->next = NULL;
-		new_free->size = curs->size - size - sizeof(header_t);
-		curs->size = size;
-		new_free->isFree = true;
-		header_free_add_sorted_asc(new_free);
-
-	}
+	cut_overhang_mem(curs, size);
 	return (curs);
 }
 
