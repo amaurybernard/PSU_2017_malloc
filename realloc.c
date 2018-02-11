@@ -8,20 +8,26 @@
 #include <unistd.h>
 #include <memory.h>
 #include "header.h"
-
+#include "malloc.h"
 
 void 		*realloc(void *ptr, size_t size)
 {
-	void	*new_ptr = malloc(size);
+	void		*new_ptr;
+	header_t	*header_elem;
 
+	if (!ptr)
+		return (NULL);
+	header_elem = ptr - sizeof(header_t);
+	if (!header_is_in_lst(&taken_head, header_elem))
+		return (NULL);
+	if (size <= header_elem->size) {
+		cut_overhang_mem(header_elem, size);
+		return (ptr);
+	}
+	new_ptr = malloc(size);
 	if (!new_ptr)
 		return (NULL);
-	if (!ptr)
-		return (new_ptr);
-	if (size <= ((header_t *)(ptr - sizeof(header_t)))->size) {
-		memcpy(new_ptr, ptr, size);
-	} else
-		memcpy(new_ptr, ptr, ((header_t *)(ptr - sizeof(header_t)))->size);
-	free(ptr);
+	memcpy(new_ptr - sizeof(header_t), header_elem,
+		header_elem->size + sizeof(header_t));
 	return (new_ptr);
 }

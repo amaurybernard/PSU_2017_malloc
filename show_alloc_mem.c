@@ -17,6 +17,7 @@ static void	show_address(char *str, const void *ptr)
 	write(1, "\n", 1);
 }
 
+/*
 static void	show_block(header_t *header_block) {
 	write(1, "\n0x", 3);
 	my_putnbr_base((long)header_block + sizeof(header_t), "0123456789abcdef");
@@ -26,10 +27,10 @@ static void	show_block(header_t *header_block) {
 		"0123456789abcdef");
 	write(1, " : ", 3);
 	my_putnbr_base((long)header_block->size, "0123456789");
-}
+}*/
 
-/* debug function
-static void	show_block_state(header_t *header_block) {
+/* debug function*/
+static void	show_block(header_t *header_block) {
 	write(1, "\n0x", 3);
 	my_putnbr_base((long)header_block + sizeof(header_t), "0123456789abcdef");
 	write(1, " - 0x", 5);
@@ -40,8 +41,7 @@ static void	show_block_state(header_t *header_block) {
 	my_putnbr_base((long)header_block->size, "0123456789");
 	write(1, " : ", 3);
 	my_putstr(header_block->isFree ? " free" : " TAKEN");
-}*/
-
+}
 
 void 		show_alloc_mem(void)
 {

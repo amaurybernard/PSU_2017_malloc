@@ -7,6 +7,20 @@
 
 #include "header.h"
 
+bool	header_is_in_lst(header_t **head, header_t *ptr)
+{
+	header_t	*current = *head;
+
+	if (!ptr)
+		return false;
+	while (current) {
+		if (current == ptr)
+			return true;
+		current = current->next;
+	}
+	return false;
+}
+
 /**
 * Add new_elem at the end of the list
 * @param first != NULL

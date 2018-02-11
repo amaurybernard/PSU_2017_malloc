@@ -10,21 +10,14 @@
 
 void	 		free(void *ptr)
 {
-	header_t	*current = taken_head;
-	bool	check = false;
+	header_t	*header_elem;
 
 	if (!ptr)
 		return ;
-	while (current) {
-		if (current->size ==
-			((header_t *)(ptr - sizeof(header_t)))->size) {
-			check = true;
-			break ;
-		}
-		current = current->next;
-	}
-	if (check == true) {
-		header_delete(&taken_head, current);
-		header_free_add_sorted_asc(current);
+	header_elem = ptr - sizeof(header_t);
+	if (header_is_in_lst(&taken_head, header_elem)) {
+		header_delete(&taken_head, header_elem);
+		header_free_add_sorted_asc(header_elem);
+		header_elem->isFree = true;
 	}
 }

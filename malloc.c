@@ -48,6 +48,7 @@ static header_t	*sbrk_caller(size_t size)
 void		cut_overhang_mem(header_t *curs, size_t size)
 {
 	header_t	*new_free;
+
 	if (curs->size > (size + sizeof(header_t))) {
 		new_free = (header_t *)((unsigned long)curs +
 			(unsigned long)size + (unsigned long)sizeof(header_t));
@@ -105,4 +106,7 @@ void	*malloc(size_t size)
 		+ (unsigned long)sizeof(header_t)));
 }
 
-//todo: calloc
+void	*calloc(size_t nmemb, size_t size)
+{
+	return (malloc(nmemb * size));
+}
