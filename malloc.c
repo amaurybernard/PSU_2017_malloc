@@ -19,7 +19,7 @@ header_t 		*taken_head = NULL;
 /** First member of the list of free blocks */
 header_t		*free_head = NULL;
 /** multi thread locker */
-static pthread_mutex_t 	mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t 	mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /**
 * allocate the right numbers of pages
@@ -95,10 +95,12 @@ void	*malloc(size_t size)
 
 	pthread_mutex_lock(&mutex);
 	if (size == 0) {
+		pthread_mutex_unlock(&mutex);
 		return (NULL);
 	}
 	header_elem = get_free_space(size);
 	if (!header_elem) {
+		pthread_mutex_unlock(&mutex);
 		return (NULL);
 	}
 	pthread_mutex_unlock(&mutex);

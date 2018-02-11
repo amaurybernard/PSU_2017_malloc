@@ -10,6 +10,7 @@
 
 	#include <unistd.h>
 	#include <stdlib.h>
+	#include <pthread.h>
 	#include "header.h"
 
 	void 	*malloc(size_t);
@@ -23,5 +24,7 @@
 	extern header_t 		*taken_head;
 	/** First member of the list of free blocks */
 	extern header_t		*free_head;
+	/** multi thread locker */
+	extern pthread_mutex_t 	mutex;
 
 #endif /* !PSU_2017_MALLOC_MALLOC_H */
