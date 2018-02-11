@@ -18,17 +18,17 @@ void	header_add_to_end(header **first, header *new_elem)
 	header	*curs = *first;
 
 	new_elem->next = NULL;
-	my_putstr("a\n");
+	//my_putstr("a\n");
 	if (!curs) {
-		my_putstr("OK!\n");
+		//my_putstr("OK!\n");
 		*first = new_elem;
 		return;
 	}
-	my_putstr("b\n");
+	//my_putstr("b\n");
 	while(curs->next != NULL) {
 		curs = curs->next;
-		my_putstr("fail: size ");
-		my_putnbr_base(curs->size, "0123456789");
+		//my_putstr("fail: size ");
+		//my_putnbr_base(curs->size, "0123456789");
 	}
 	curs->next = new_elem;
 }
@@ -52,7 +52,7 @@ void	header_add_after_elem(header *elem, header *new_elem)
 void	header_delete(header **first, header *to_delete)
 {
 	if (*first == to_delete) {
-		first = NULL;
+		*first = (*first)->next ? (*first)->next : NULL;
 		return;
 	}
 	while ((*first)->next != to_delete) {

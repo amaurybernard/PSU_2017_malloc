@@ -78,7 +78,7 @@ static header	*get_free_space(size_t size)
 			my_putstr("free_head == NULL\n");
 		new_free = (header *)((unsigned long)curs + (unsigned long)size + (unsigned long)sizeof(header));
 		if ((void *)new_free >= sbrk(0)) {
-			my_putstr("Alexandre est un pd!\n");
+			my_putstr("\tptr > break_ptr\n");
 			return curs;
 		}
 		my_putstr("here!\n");
@@ -89,12 +89,12 @@ static header	*get_free_space(size_t size)
 		my_putstr("not here!\nsize new_free: ");
 		my_putnbr_base(new_free->size, "0123456789");
 		my_putstr("\n");
-		if ((void *)(new_free + new_free->size + sizeof(header)) >= sbrk(0)) {
-			my_putstr("Alexandre est un pd!\n");
-			return curs;
+		if ((void *)((unsigned long)new_free + (unsigned long)new_free->size + (unsigned long)sizeof(header)) >= sbrk(0)) {
+			my_putstr("\tend_ptr > break ptr\n");
+			//return curs;
 		}
-		header_free_add_sorted_asc(new_free);//todo make it work
 		curs->size = size;
+		header_free_add_sorted_asc(new_free);//todo make it work
 
 	}
 	my_putstr("get_free end!\n");

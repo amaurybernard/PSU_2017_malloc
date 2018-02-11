@@ -37,9 +37,21 @@ void 	header_free_add_sorted_asc(header *to_add) {
 		curs = curs->next;
 	}
 	if (!prev) {//Pas d'élément dans la liste ou size < à tout les autres
-		my_putstr("\t\t !prev");
+		if (free_head){
+		my_putstr("\t\t !prev\n");
+		my_putstr("\t\theader_free before free_head->size :");
+		my_putnbr_base(free_head->size, "0123456789");
+		my_putstr("\n");
+		}
 		to_add->next = free_head;
 		free_head = to_add;
+
+		if (free_head && free_head->next) {
+			my_putstr("\t\theader_free after free_head->size :");
+			my_putnbr_base(free_head->size, "0123456789");
+			my_putstr("\t\theader_free after free_head->next->size :");
+			my_putnbr_base(free_head->next->size, "0123456789");
+		}
 	} else if (!curs) { //fin de la list
 		prev->next = to_add;
 	} else {//au mileu
